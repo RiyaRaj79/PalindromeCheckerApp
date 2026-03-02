@@ -86,12 +86,40 @@ public class PalindromeCheckerApp {
                 tail.next = newNode;
                 tail = newNode;
             }
+            left++;
+            right--;
         }
 
         boolean result = isPalindrome(head);
 
         if (result) {
             System.out.println("Result: The given string is a Palindrome (ignoring case & spaces).");
+        } else {
+            System.out.println("Result: The given string is NOT a Palindrome.");
+        }
+
+        scanner.close();
+    }
+}
+
+// Main Application Class
+public class PalindromeCheckerApp {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=== UC11: Object-Oriented Palindrome Service ===");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        // Create service object
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("Result: The given string is a Palindrome.");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
         }
