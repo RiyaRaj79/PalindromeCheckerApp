@@ -1,31 +1,104 @@
 import java.util.*;
 
-// Palindrome Service Class (Encapsulation)
-class PalindromeChecker {
+public class PalindromeCheckerApp {
 
-    // Public method exposed to check palindrome
-    public boolean checkPalindrome(String input) {
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
 
-        if (input == null) {
-            return false;
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    // Method to check palindrome using Linked List
+    public static boolean isPalindrome(Node head) {
+
+        if (head == null || head.next == null)
+            return true;
+
+        Node slow = head;
+        Node fast = head;
+
+        // Step 1: Find middle using Fast & Slow pointers
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        // Normalize input (ignore spaces & case)
+        // Step 2: Reverse second half
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
+
+        // Step 3: Compare both halves
+        Node tempSecond = secondHalf;
+        while (tempSecond != null) {
+            if (firstHalf.data != tempSecond.data) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            tempSecond = tempSecond.next;
+        }
+
+        return true;
+    }
+
+    // Method to reverse linked list
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+
+        while (current != null) {
+            Node nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+
+        return prev;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=== UC8: Linked List Based Palindrome Check ===");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        // Step 1: Normalize string
+        // Remove all spaces and convert to lowercase
         String processedInput = input.replaceAll("\\s+", "").toLowerCase();
 
-        // Using two-pointer technique (Array internally)
-        int left = 0;
-        int right = processedInput.length() - 1;
+        // Convert string to linked list
+        Node head = null;
+        Node tail = null;
 
-        while (left < right) {
-            if (processedInput.charAt(left) != processedInput.charAt(right)) {
-                return false;
+        for (int i = 0; i < processedInput.length(); i++) {
+            Node newNode = new Node(processedInput.charAt(i));
+
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
             left++;
             right--;
         }
 
-        return true;
+        boolean result = isPalindrome(head);
+
+        if (result) {
+            System.out.println("Result: The given string is a Palindrome (ignoring case & spaces).");
+        } else {
+            System.out.println("Result: The given string is NOT a Palindrome.");
+        }
+
+        scanner.close();
     }
 }
 
