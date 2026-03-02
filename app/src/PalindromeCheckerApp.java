@@ -12,20 +12,15 @@ public class PalindromeCheckerApp {
         for (char c : input.toCharArray()) {
             stack.push(c);
         }
-
-        // Assume palindrome initially
         boolean isPalindrome = true;
 
         // Iterate again through the original string
         for (char c : input.toCharArray()) {
-            // Pop from stack and compare with current character
             if (stack.pop() != c) {
                 isPalindrome = false;
                 break;
             }
         }
-
-        // Print the result
         System.out.println("input: " + input);
         System.out.println("is palindrome?: " + isPalindrome);
     }
