@@ -68,7 +68,8 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Remove spaces and convert to lowercase
+        // Step 1: Normalize string
+        // Remove all spaces and convert to lowercase
         String processedInput = input.replaceAll("\\s+", "").toLowerCase();
 
         // Convert string to linked list
@@ -90,7 +91,7 @@ public class PalindromeCheckerApp {
         boolean result = isPalindrome(head);
 
         if (result) {
-            System.out.println("Result: The given string is a Palindrome.");
+            System.out.println("Result: The given string is a Palindrome (ignoring case & spaces).");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
         }
