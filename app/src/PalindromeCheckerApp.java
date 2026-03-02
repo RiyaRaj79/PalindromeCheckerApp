@@ -1,55 +1,104 @@
 import java.util.*;
 
-// Step 1: Strategy Interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
+public class PalindromeCheckerApp {
 
-// Step 2: Stack-Based Strategy
-class StackStrategy implements PalindromeStrategy {
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
 
-    @Override
-    public boolean checkPalindrome(String input) {
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
-        String processed = input.replaceAll("\\s+", "").toLowerCase();
+    // Method to check palindrome using Linked List
+    public static boolean isPalindrome(Node head) {
 
-        Stack<Character> stack = new Stack<>();
+        if (head == null || head.next == null)
+            return true;
 
-        for (char ch : processed.toCharArray()) {
-            stack.push(ch);
+        Node slow = head;
+        Node fast = head;
+
+        // Step 1: Find middle using Fast & Slow pointers
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
 
-        for (char ch : processed.toCharArray()) {
-            if (ch != stack.pop()) {
+        // Step 2: Reverse second half
+        Node secondHalf = reverse(slow);
+        Node firstHalf = head;
+
+        // Step 3: Compare both halves
+        Node tempSecond = secondHalf;
+        while (tempSecond != null) {
+            if (firstHalf.data != tempSecond.data) {
                 return false;
             }
+            firstHalf = firstHalf.next;
+            tempSecond = tempSecond.next;
         }
 
         return true;
     }
-}
 
-// Step 3: Deque-Based Strategy
-class DequeStrategy implements PalindromeStrategy {
+    // Method to reverse linked list
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
 
-    @Override
-    public boolean checkPalindrome(String input) {
-
-        String processed = input.replaceAll("\\s+", "").toLowerCase();
-
-        Deque<Character> deque = new LinkedList<>();
-
-        for (char ch : processed.toCharArray()) {
-            deque.addLast(ch);
+        while (current != null) {
+            Node nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
         }
 
-        while (deque.size() > 1) {
-            if (!deque.removeFirst().equals(deque.removeLast())) {
-                return false;
+        return prev;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("=== UC8: Linked List Based Palindrome Check ===");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        // Step 1: Normalize string
+        // Remove all spaces and convert to lowercase
+        String processedInput = input.replaceAll("\\s+", "").toLowerCase();
+
+        // Convert string to linked list
+        Node head = null;
+        Node tail = null;
+
+        for (int i = 0; i < processedInput.length(); i++) {
+            Node newNode = new Node(processedInput.charAt(i));
+
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
+            left++;
+            right--;
         }
 
-        return true;
+        boolean result = isPalindrome(head);
+
+        if (result) {
+            System.out.println("Result: The given string is a Palindrome (ignoring case & spaces).");
+        } else {
+            System.out.println("Result: The given string is NOT a Palindrome.");
+        }
+
+        scanner.close();
     }
 }
 
